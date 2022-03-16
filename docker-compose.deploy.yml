@@ -1,14 +1,20 @@
 version: "3.3"
 services:
   studio:
-    image: docker4ideas/ideas-studio:1.1
+    image: docker4ideas/ideas-studio:1.4
     ports:
     - "8080:8080"
+    volumes:
+    - ./configuration/studio-configuration:/ideas/studio/src/main/webapp/WEB-INF/config
 
   ideas-plaintext-language:
-    image: "docker4ideas/ideas-plaintext-module"
+    image: docker4ideas/ideas-plaintext-module
 
   nginx:
     image: docker4ideas/ideas_nginx
     ports:
       - "8081:8081"
+
+  ideas-dockerfile-language:
+    image: docker4ideas/module-docker
+    privileged: true
