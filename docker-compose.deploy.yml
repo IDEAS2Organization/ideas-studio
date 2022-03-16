@@ -7,13 +7,13 @@ services:
     volumes:
     - ./configuration/studio-configuration:/ideas/studio/src/main/webapp/WEB-INF/config
 
-  ideas-plaintext-language:
-    image: docker4ideas/ideas-plaintext-module
-
   nginx:
     image: docker4ideas/ideas_nginx
     ports:
       - "8081:8081"
+
+  ideas-plaintext-language:
+    image: docker4ideas/ideas-plaintext-module
 
   ideas-dockerfile-language:
     image: docker4ideas/module-docker
