@@ -1,0 +1,11 @@
+FROM docker4ideas/module:develop
+
+RUN apt update
+RUN apt install -y texlive-latex-base
+COPY ideas-latex-module /ideas/latex-module
+
+WORKDIR /ideas/latex-module
+
+RUN mvn package -DskipTests
+
+CMD mvn spring-boot:run

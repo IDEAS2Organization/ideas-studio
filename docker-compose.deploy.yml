@@ -6,6 +6,7 @@ services:
     - "8080:8080"
     volumes:
     - ./configuration/studio-configuration:/ideas/studio/src/main/webapp/WEB-INF/config
+    - tmp:/tmp
 
   nginx:
     image: docker4ideas/ideas_nginx
@@ -18,3 +19,11 @@ services:
   ideas-dockerfile-language:
     image: docker4ideas/module-docker
     privileged: true
+
+  ideas-latex-language:
+    image: docker4ideas/latex-module
+    volumes:
+     - tmp:/tmp
+
+volumes:
+  tmp:
