@@ -1,0 +1,9 @@
+FROM docker4ideas/module-docker-compose:develop
+
+COPY ideas-dockercompose-module /ideas/dockercompose-module
+
+WORKDIR /ideas/dockercompose-module
+
+RUN mvn install -DskipTests
+
+CMD bash -c "dockerd & mvn spring-boot:run"

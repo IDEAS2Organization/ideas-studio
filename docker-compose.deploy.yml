@@ -25,5 +25,9 @@ services:
     volumes:
      - tmp:/tmp
 
+  ideas-dockercompose-language:
+    image: docker4ideas/module-docker-compose
+    privileged: true
+
 volumes:
   tmp:
