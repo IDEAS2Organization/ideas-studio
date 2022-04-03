@@ -28,6 +28,8 @@ services:
   ideas-dockercompose-language:
     image: docker4ideas/module-docker-compose
     privileged: true
+    environment:
+      - ONE_USER_MODE=false
 
 volumes:
   tmp:
