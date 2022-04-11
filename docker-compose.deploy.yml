@@ -1,11 +1,11 @@
 version: "3.3"
 services:
   studio:
-    image: docker4ideas/ideas-studio:1.4
+    image: docker4ideas/ideas-studio:1.5
     ports:
     - "8080:8080"
     volumes:
-    - ./configuration/studio-configuration:/ideas/studio/src/main/webapp/WEB-INF/config
+    - ./configuration/studio-configuration:/config
     - tmp:/tmp
 
   nginx:
@@ -14,7 +14,7 @@ services:
       - "8081:8081"
 
   ideas-plaintext-language:
-    image: docker4ideas/ideas-plaintext-module
+    image: docker4ideas/ideas-plaintext-module:1.0
 
   ideas-dockerfile-language:
     image: docker4ideas/module-docker
