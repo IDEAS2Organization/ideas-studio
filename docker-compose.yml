@@ -25,12 +25,12 @@ services:
 #      - /tmp:/tmp
 
 
-  #ideas-plaintext-language:
-  #  image: docker4ideas/module:develop
-  #  command: bash -c "tail -f /dev/null"
-  #  # command: bash -c "cd /ideas/plaintext-module && mvn spring-boot:run"
-  #  volumes:
-  #    - ../ideas-plaintext-module:/ideas/plaintext-module
+  ideas-plaintext-language:
+   image: docker4ideas/module:develop
+   command: bash -c "tail -f /dev/null"
+   # command: bash -c "cd /ideas/plaintext-module && mvn spring-boot:run"
+   volumes:
+     - ../ideas-plaintext-module:/ideas/plaintext-module
 
   #ideas-dockercompose-language:
   #  image: docker4ideas/module:develop
@@ -40,10 +40,10 @@ services:
   #    - ../ideas-dockercompose-module:/ideas/dockercompose-module
 
 
-  ideas-dockerfile-language:
-    image: docker4ideas/module-docker:develop
-    command: bash -c "dockerd"
-    # command: bash -c "cd /ideas/dockerfile-module && mvn spring-boot:run"
-    privileged: true
-    volumes:
-      - ../ideas-dockerfile-module:/ideas/dockerfile-module
+  # ideas-dockerfile-language:
+  #   image: docker4ideas/module-docker:develop
+  #   command: bash -c "dockerd"
+  #   # command: bash -c "cd /ideas/dockerfile-module && mvn spring-boot:run"
+  #   privileged: true
+  #   volumes:
+  #     - ../ideas-dockerfile-module:/ideas/dockerfile-module
