@@ -16,14 +16,14 @@ services:
   ideas-plaintext-language:
     image: docker4ideas/ideas-plaintext-module:1.0
 
+  ideas-latex-language:
+    image: docker4ideas/latex-module:1.0
+    volumes:
+     - tmp:/tmp
+
   ideas-dockerfile-language:
     image: docker4ideas/module-docker
     privileged: true
-
-  ideas-latex-language:
-    image: docker4ideas/latex-module
-    volumes:
-     - tmp:/tmp
 
   ideas-dockercompose-language:
     image: docker4ideas/module-docker-compose
