@@ -1,9 +1,32 @@
 FROM docker4ideas/module-docker:develop
 
+COPY ideas-base-module /ideas/base-module
+WORKDIR /ideas/base-module
+RUN mvn install
+
 COPY ideas-dockerfile-module /ideas/dockerfile-module
-
 WORKDIR /ideas/dockerfile-module
+RUN mvn package -DskipTests
+RUN mv target /tmp/target
 
-RUN mvn install -DskipTests
+FROM tomcat:9.0.62-jre11-temurin-focal
+COPY --from=0 /tmp/target/*.war ./webapps/ROOT.war
 
-CMD bash -c "dockerd & mvn spring-boot:run"
+RUN apt-get update -qq && apt-get install -qqy \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    lxc \
+    iptables
+    
+# Install Docker from Docker Inc. repositories.
+RUN curl -sSL https://get.docker.com/ | sh
+
+# Install the magic wrapper.
+ADD /ideas-studio/wrapdocker /usr/local/bin/wrapdocker
+RUN chmod +x /usr/local/bin/wrapdocker
+
+# Define additional metadata for our image.
+VOLUME /var/lib/docker
+
+CMD bash -c "catalina.sh run & dockerd & while true; do sleep 1s; done"
