@@ -22,8 +22,10 @@ services:
      - tmp:/tmp
 
   ideas-dockerfile-language:
-    image: docker4ideas/module-docker
+    image: docker4ideas/module-docker:1.0
     privileged: true
+    environment:
+      - ONE_USER_MODE=false
 
   ideas-dockercompose-language:
     image: docker4ideas/module-docker-compose
