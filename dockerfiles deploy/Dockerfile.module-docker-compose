@@ -1,9 +1,15 @@
-FROM docker4ideas/module-docker-compose:develop
+FROM docker4ideas/module-docker:develop
+
+COPY ideas-base-module /ideas/base-module
+WORKDIR /ideas/base-module
+RUN mvn install
 
 COPY ideas-dockercompose-module /ideas/dockercompose-module
-
 WORKDIR /ideas/dockercompose-module
+RUN mvn package -DskipTests
+RUN mv target /tmp/target
 
-RUN mvn install -DskipTests
+FROM docker4ideas/module-docker:1.0
+COPY --from=0 /tmp/target/*.war ./webapps/ROOT.war
 
-CMD bash -c "dockerd & mvn spring-boot:run"
+RUN apt-get install -y docker-compose

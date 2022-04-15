@@ -28,7 +28,7 @@ services:
       - ONE_USER_MODE=false
 
   ideas-dockercompose-language:
-    image: docker4ideas/module-docker-compose
+    image: docker4ideas/module-docker-compose:1.0
     privileged: true
     environment:
       - ONE_USER_MODE=false
