@@ -9,7 +9,6 @@
           uri="http://www.springframework.org/security/tags"%>
 
 <ideas:pages-template>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
         jQuery(function () {
             //Connected with
@@ -55,16 +54,16 @@
                         
                         debugger;
                         var repeatedEmail = "${repeatedEmail}";
-                        var captchaInvalid = "${captchaInvalid}";
+                        //var captchaInvalid = "${captchaInvalid}";
                         if (repeatedEmail == "true") {
                             $("#statusPanel")
                                     .append(
                                             '<spring:message code="security.repeatedEmail.error" />');
-                        } else if(captchaInvalid == "true") {
+                        } /*else if(captchaInvalid == "true") {
                             $("#statusPanel")
                                     .append(
                                             '<spring:message code="security.captchaInvalid.error" />');
-                        } else {
+                        }*/ else {
                             $("#statusPanel")
                                     .append(
                                             '<spring:message code="researcher.settings.problems" />');
@@ -311,7 +310,7 @@
                             </div>
                         </div>
 
-                        <div class="g-recaptcha" data-sitekey="${captchaKey}"></div>
+                        <!--<div class="g-recaptcha" data-sitekey="${captchaKey}"></div>-->
 
                         <div id="settingsButtonPanel">
                             <span id="statusPanel"> <span class="glyphicon glyphicon-ok"></span>

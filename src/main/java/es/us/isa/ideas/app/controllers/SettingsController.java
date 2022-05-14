@@ -89,7 +89,7 @@ public class SettingsController extends AbstractController {
         boolean diffPasswords = false;
         boolean changingPass = false;
         boolean newAccount = researcher.getUserAccount() == null;
-        String response = request.getParameter("g-recaptcha-response");
+        //String response = request.getParameter("g-recaptcha-response");
 
         ModelAndView mv = null;
         if (!newAccount) {
@@ -149,7 +149,7 @@ public class SettingsController extends AbstractController {
             // Save Researcher
             if (newAccount) {
                 try {
-                    captchaService.processResponse(response);
+                    //captchaService.processResponse(response);
                     researcher.setUserAccount(new UserAccount());
                     researcherController.saveNew(researcher);
                     mv = edit();
