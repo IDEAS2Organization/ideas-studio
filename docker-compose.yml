@@ -1,17 +1,19 @@
 version: "3.5"
 services:
 
-  nginx:
-    image: docker4ideas/ideas_nginx
-    ports:
-      - "8081:8081"
+  # nginx:
+  #   image: docker4ideas/ideas_nginx
+  #   ports:
+  #     - "8081:8081"
 
   ideas-studio-develop:
     image: docker4ideas/ideas-studio:develop
-    #command: bash -c "tail -f /dev/null"
+    # command: bash -c "tail -f /dev/null"
     command: bash -c "cd /ideas/studio && mvn spring-boot:run"
     ports:
       - "8080:8080"
+    environment:
+      - GMAIL_PASSWORD=${GMAIL_PASSWORD}
     volumes: 
       - .:/ideas/studio
       - /tmp:/tmp # Necesario para el módulo de latex
@@ -25,19 +27,20 @@ services:
 #      - /tmp:/tmp
 
 
-  ideas-plaintext-language:
-   image: docker4ideas/module:develop
-   command: bash -c "tail -f /dev/null"
-   # command: bash -c "cd /ideas/plaintext-module && mvn spring-boot:run"
-   volumes:
-     - ../ideas-plaintext-module:/ideas/plaintext-module
-
-  #ideas-dockercompose-language:
+  # ideas-plaintext-language:
   #  image: docker4ideas/module:develop
   #  command: bash -c "tail -f /dev/null"
-  #  # command: bash -c "cd /ideas/dockercompose-module && mvn spring-boot:run"
+  #  # command: bash -c "cd /ideas/plaintext-module && mvn spring-boot:run"
   #  volumes:
-  #    - ../ideas-dockercompose-module:/ideas/dockercompose-module
+  #    - ../ideas-plaintext-module:/ideas/plaintext-module
+
+  # ideas-dockercompose-language:
+  #   image: docker4ideas/module-docker-compose:develop
+  #   command: bash -c "dockerd"
+  #   # command: bash -c "cd /ideas/dockercompose-module && mvn spring-boot:run"
+  #   privileged: true
+  #   volumes:
+  #     - ../ideas-dockercompose-module:/ideas/dockercompose-module
 
 
   # ideas-dockerfile-language:
@@ -45,5 +48,7 @@ services:
   #   command: bash -c "dockerd"
   #   # command: bash -c "cd /ideas/dockerfile-module && mvn spring-boot:run"
   #   privileged: true
+  #   environment:
+  #     - ONE_USER_MODE=true
   #   volumes:
   #     - ../ideas-dockerfile-module:/ideas/dockerfile-module

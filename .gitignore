@@ -30,3 +30,5 @@ HELP.md
 ideas-repo/
 
 .attach*
+
+.env

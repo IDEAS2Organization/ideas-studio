@@ -10,6 +10,15 @@ import com.sendgrid.SendGrid;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import org.hibernate.annotations.common.util.impl.Log_$logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +39,13 @@ public class CustomMailer {
     private CustomizationsExtractor customizationExtrator;
     
     @Value("${mail.from}")
-    private String from;  
+    private String from;
+
+    @Value("${mailserver.host}")
+    private String host;
+
+    @Value("${mailserver.port}")
+    private String port;
     
     private String [] bcc;
     private String [] cc;
@@ -55,24 +70,45 @@ public class CustomMailer {
     public void sendMailGrid(String to, String subject, String msg)
     {
         try {
-            Email from = new Email(getFrom());
-            Email _to = new Email(to);
-            Content content = new Content("text/plain", msg);
-            Mail mail = new Mail(from, subject, _to, content);
+            Properties properties = System.getProperties();
 
-            String env = System.getenv("SENDGRID_API_KEY");
-            if (env == null) {
-                System.out.println("No environment SENDGRID_API_KEY found. Please, declare SENDGRID_API_KEY to send emails from workbench");
+            properties.put("mail.smtp.host", this.host);
+            properties.put("mail.smtp.port", this.port);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            String password = System.getenv("GMAIL_PASSWORD");
+            if (password == null) {
+                System.out.println("No environment GMAIL_PASSWORD found. Please, declare GMAIL_PASSWORD to send emails from workbench");
             }
-            SendGrid sg = new SendGrid(env);
-            Request request = new Request();
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+
+            Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+                protected PasswordAuthentication getPasswordAuthentication() {
+    
+                    return new PasswordAuthentication(getFrom(), password);
+    
+                }
+    
+            });
+            session.setDebug(true);
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+            // Set Subject: header field
+            message.setSubject(subject);
+
+            // Now set the actual message
+            message.setText(msg);
+            
+            // Send message
+            Transport.send(message);
         } catch (Exception ex) {
             System.out.println("ERROR: " + ex.getMessage());
         }
