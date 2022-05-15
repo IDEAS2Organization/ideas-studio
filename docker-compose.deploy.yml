@@ -1,9 +1,11 @@
 version: "3.3"
 services:
   studio:
-    image: docker4ideas/ideas-studio:1.5
+    image: docker4ideas/ideas-studio:1.6
     ports:
     - "8080:8080"
+    environment:
+      - GMAIL_PASSWORD=${GMAIL_PASSWORD}
     volumes:
     - ./configuration/studio-configuration:/config
     - tmp:/tmp
