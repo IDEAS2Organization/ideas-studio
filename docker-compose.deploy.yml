@@ -11,7 +11,7 @@ services:
     - tmp:/tmp
 
   nginx:
-    image: docker4ideas/ideas_nginx
+    image: docker4ideas/ideas-nginx:1.0
     ports:
       - "8081:8081"
 
