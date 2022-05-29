@@ -1,22 +1,52 @@
 package es.us.isa.ideas.app.mail;
 
+import com.sendgrid.Content;
+import com.sendgrid.Email;
+import com.sendgrid.Mail;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import org.hibernate.annotations.common.util.impl.Log_$logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 
 
 
-/**
- *
- * @author japarejo
- */
+@Component
 public class CustomMailer {
     
+    @Autowired
     private MailSender mailSender;
+    
+    @Autowired
     private CustomizationsExtractor customizationExtrator;
-    private String from;    
+    
+    @Value("${mail.from}")
+    private String from;
+
+    @Value("${mailserver.host}")
+    private String host;
+
+    @Value("${mailserver.port}")
+    private String port;
+    
     private String [] bcc;
     private String [] cc;
     
@@ -34,14 +64,54 @@ public class CustomMailer {
     
     public void sendMail(String to, String subject, String msg)
     {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(getFrom());
-        message.setTo(to);
-        message.setCc(getCc());
-        message.setBcc(getBcc());
-        message.setSubject(subject);
-        message.setText(msg);
-        getMailSender().send(message);
+        this.sendMailGrid(to, subject, msg);
+    }
+    
+    public void sendMailGrid(String to, String subject, String msg)
+    {
+        try {
+            Properties properties = System.getProperties();
+
+            properties.put("mail.smtp.host", this.host);
+            properties.put("mail.smtp.port", this.port);
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            String password = System.getenv("GMAIL_PASSWORD");
+            if (password == null) {
+                System.out.println("No environment GMAIL_PASSWORD found. Please, declare GMAIL_PASSWORD to send emails from workbench");
+            }
+
+            Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+
+                protected PasswordAuthentication getPasswordAuthentication() {
+    
+                    return new PasswordAuthentication(getFrom(), password);
+    
+                }
+    
+            });
+            session.setDebug(true);
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+            // Set Subject: header field
+            message.setSubject(subject);
+
+            // Now set the actual message
+            message.setText(msg);
+            
+            // Send message
+            Transport.send(message);
+        } catch (Exception ex) {
+            System.out.println("ERROR: " + ex.getMessage());
+        }
     }
     
     public void sendMail(String to, Map<String,String> customizations, TemplateMail template)

@@ -1,0 +1,14 @@
+FROM maven:3.8.4-openjdk-11-slim
+
+# Generar archivos necesarios para tomcat
+COPY ideas-base-module /ideas/module
+RUN cd /ideas/module && mvn install
+COPY ideas-plaintext-module /ideas/plaintext
+RUN cd /ideas/plaintext && mvn package
+WORKDIR /ideas/plaintext
+
+RUN cp -r target /target
+
+FROM tomcat:9.0.62-jre11-temurin-focal
+
+COPY --from=0 /target/*.war ./webapps/ROOT.war

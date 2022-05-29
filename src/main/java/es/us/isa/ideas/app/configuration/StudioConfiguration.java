@@ -22,7 +22,6 @@ public class StudioConfiguration implements Serializable {
 
     private String workbenchName;
 
-    private Map<String, String> modules;
     private Map<String, String> images;
     private Map<String, String> configurationFiles;
     private String helpURI;
@@ -31,6 +30,9 @@ public class StudioConfiguration implements Serializable {
     private Boolean advancedMode;
     private List<String> extensionsFilter;
     private List<String> extensionsPreferences;
+    private String proxyUri;
+    private String dockerProxyUri;
+    private List<String> modules;
 
     public StudioConfiguration() {
         super();
@@ -46,19 +48,35 @@ public class StudioConfiguration implements Serializable {
         } catch (IOException e) {
             LOG.log(Level.SEVERE, null, e);
         }
-
+        
         return config;
     }
 
-    public Map<String, String> getModules() {
+    public List<String> getModules() {
         return modules;
     }
 
-    public void setModules(Map<String, String> modules) {
+    public void setModules(List<String> modules) {
         this.modules = modules;
     }
 
-    public Map<String, String> getImages() {
+    public String getProxyUri() {
+		return proxyUri;
+	}
+
+	public void setProxyUri(String proxyUri) {
+		this.proxyUri = proxyUri;
+	}
+
+    public String getDockerProxyUri() {
+		return dockerProxyUri;
+	}
+
+	public void setDockerProxyUri(String dockerProxyUri) {
+		this.dockerProxyUri = dockerProxyUri;
+	}
+
+	public Map<String, String> getImages() {
         return images;
     }
 

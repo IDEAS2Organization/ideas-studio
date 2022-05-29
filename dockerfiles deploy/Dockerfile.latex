@@ -1,0 +1,16 @@
+FROM maven:3.8.4-openjdk-11-slim
+
+# Generar archivos necesarios para tomcat
+COPY ideas-base-module /ideas/module
+RUN cd /ideas/module && mvn install
+COPY ideas-latex-module /ideas/latex
+RUN cd /ideas/latex && mvn package -DskipTests
+WORKDIR /ideas/latex
+
+RUN cp -r target /target
+
+FROM tomcat:9.0.62-jre11-temurin-focal
+RUN apt update
+RUN apt install -y texlive-latex-base
+
+COPY --from=0 /target/*.war ./webapps/ROOT.war

@@ -1,0 +1,4 @@
+FROM maven:3.8.4-openjdk-11-slim
+
+COPY ideas-base-module /ideas/base-module
+RUN cd /ideas/base-module && mvn install

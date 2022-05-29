@@ -1,0 +1,39 @@
+version: "3.3"
+services:
+  studio:
+    image: docker4ideas/ideas-studio:1.6
+    ports:
+    - "8080:8080"
+    environment:
+      - GMAIL_PASSWORD=${GMAIL_PASSWORD}
+    volumes:
+    - ./configuration/studio-configuration:/config
+    - tmp:/tmp
+
+  nginx:
+    image: docker4ideas/ideas-nginx:1.0
+    ports:
+      - "8081:8081"
+
+  ideas-plaintext-language:
+    image: docker4ideas/ideas-plaintext-module:1.0
+
+  ideas-latex-language:
+    image: docker4ideas/latex-module:1.0
+    volumes:
+     - tmp:/tmp
+
+  ideas-dockerfile-language:
+    image: docker4ideas/module-docker:1.0
+    privileged: true
+    environment:
+      - ONE_USER_MODE=false
+
+  ideas-dockercompose-language:
+    image: docker4ideas/module-docker-compose:1.0
+    privileged: true
+    environment:
+      - ONE_USER_MODE=false
+
+volumes:
+  tmp:

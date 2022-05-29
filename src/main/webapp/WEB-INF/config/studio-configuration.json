@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
    "workbenchName": "IDEAS",
    "images": {
@@ -36,3 +37,44 @@
    "extensionsFilter": ["ang", "ctl", "html"],
    "extensionsPreferences": ["ag", "at", "oai-spec", "json", "yaml"]
 }
+=======
+{
+    "images": {
+        "logo": "designer/appLogoBig.png",
+        "search": "designer/Search.png"
+    },
+    "configurationFiles": {
+        "application": "classpath*:application.properties",
+        "security": "classpath*:security.properties",
+        "social": "classpath*:social.properties",
+        "email": "classpath*:email.properties"
+    },
+    "workbenchName": "DESIGNER",
+    "helpURI": "https://designer.governify.io/IDEAS-help/",
+    "helpMode": "none",
+    "googleAnalyticsID": "UA-68297022-1",
+    "advancedMode": true,
+    "extensionsFilter": [
+        "ang",
+        "ctl",
+        "html",
+        "cfg"
+    ],
+    "extensionsPreferences": [
+        "ag",
+        "at",
+        "oai-at",
+        "json",
+        "yaml"
+    ],
+    "proxyUri": "http://localhost:8081",
+    "dockerProxyUri": "http://nginx:8081",
+    "modules": [
+        "ideas-plaintext-language",
+        "ideas-latex-language",
+        "ideas-dockerfile-language",
+        "ideas-dockercompose-language"
+    ]
+
+}
+>>>>>>> francisco

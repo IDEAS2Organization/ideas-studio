@@ -2,7 +2,6 @@ package es.us.isa.ideas.app.social;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -19,14 +18,11 @@ public class SignInUtils {
     
         @Autowired
         UserAccountService userAccountService;
-                
-        
-        @Autowired
-        AuthenticationManager authenticationManager;
+                               
         /**
 	 * Programmatically signs in the user with the given the user ID.
 	 */
-	public void signin(String userId, String providerId) {                
+	public UserAccount signin(String userId, String providerId) {                
             UsernamePasswordAuthenticationToken token=null;            
             // En caso buscamos una cuenta de usuariocon el mismo userId:
              UserAccount userAccount=userAccountService.findByUsername(userId);
@@ -34,5 +30,6 @@ public class SignInUtils {
                 token=new UsernamePasswordAuthenticationToken(userAccount,null,userAccount.getAuthorities());                          
                 SecurityContextHolder.getContext().setAuthentication(token);
              }
+             return userAccount;
 	}
 }
