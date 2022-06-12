@@ -37,9 +37,6 @@ public class CustomMailer {
     
     @Autowired
     private CustomizationsExtractor customizationExtrator;
-    
-    @Value("${mail.from}")
-    private String from;
 
     @Value("${mailserver.host}")
     private String host;
@@ -76,17 +73,23 @@ public class CustomMailer {
             properties.put("mail.smtp.port", this.port);
             properties.put("mail.smtp.ssl.enable", "true");
             properties.put("mail.smtp.auth", "true");
-
+            
+            String from = System.getenv("GMAIL_MAIL");
             String password = System.getenv("GMAIL_PASSWORD");
-            if (password == null) {
-                System.out.println("No environment GMAIL_PASSWORD found. Please, declare GMAIL_PASSWORD to send emails from workbench");
+
+            if (from == null || from.isEmpty()) {
+                throw new Exception("No environment GMAIL_MAIL found. Please, declare GMAIL_MAIL to send emails from workbench");
+            }
+
+            if (password == null || password.isEmpty()) {
+                throw new Exception("No environment GMAIL_PASSWORD found. Please, declare GMAIL_PASSWORD to send emails from workbench");
             }
 
             Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 
                 protected PasswordAuthentication getPasswordAuthentication() {
     
-                    return new PasswordAuthentication(getFrom(), password);
+                    return new PasswordAuthentication(from, password);
     
                 }
     
@@ -159,20 +162,6 @@ public class CustomMailer {
      */
     public void setCustomizationExtrator(CustomizationsExtractor customizationExtrator) {
         this.customizationExtrator = customizationExtrator;
-    }
-
-    /**
-     * @return the from
-     */
-    public String getFrom() {
-        return from;
-    }
-
-    /**
-     * @param from the from to set
-     */
-    public void setFrom(String from) {
-        this.from = from;
     }
 
     /**
