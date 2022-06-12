@@ -8,7 +8,9 @@ services:
 
   ideas-studio-develop:
     image: docker4ideas/ideas-studio:develop
-    # command: bash -c "tail -f /dev/null"
+    ##### DESCOMENTAR PARA DESARROLLAR #####
+    #command: bash -c "tail -f /dev/null"
+    ########################################
     command: bash -c "cd /ideas/studio && mvn spring-boot:run"
     ports:
       - "8080:8080"
@@ -20,7 +22,9 @@ services:
   
   ideas-latex-language:
     image: docker4ideas/latex-module:develop
-    # command: bash -c "tail -f /dev/null"
+    ##### DESCOMENTAR PARA DESARROLLAR #####
+    #command: bash -c "tail -f /dev/null"
+    ########################################
     command: bash -c "cd /ideas/latex-module && mvn spring-boot:run"
     volumes:
       - ../ideas-latex-module:/ideas/latex-module
@@ -29,25 +33,31 @@ services:
 
   ideas-plaintext-language:
     image: docker4ideas/module:develop
+    ##### DESCOMENTAR PARA DESARROLLAR #####
     #command: bash -c "tail -f /dev/null"
+    ########################################
     command: bash -c "cd /ideas/plaintext-module && mvn spring-boot:run"
     volumes:
       - ../ideas-plaintext-module:/ideas/plaintext-module
 
   ideas-dockercompose-language:
     image: docker4ideas/module-docker-compose:develop
+    ##### DESCOMENTAR PARA DESARROLLAR #####
     # command: bash -c "dockerd"
+    ########################################
     command: bash -c "cd /ideas/dockercompose-module && mvn spring-boot:run"
     privileged: true
     environment:
-      - ONE_USER_MODE=true
+      - ONE_USER_MODE=false
     volumes:
       - ../ideas-dockercompose-module:/ideas/dockercompose-module
 
 
   ideas-dockerfile-language:
     image: docker4ideas/module-docker:develop
+    ##### DESCOMENTAR PARA DESARROLLAR #####
     # command: bash -c "dockerd"
+    ########################################
     command: bash -c "cd /ideas/dockerfile-module && mvn spring-boot:run"
     privileged: true
     environment:
